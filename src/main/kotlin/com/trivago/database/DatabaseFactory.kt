@@ -34,6 +34,7 @@ object DatabaseFactory {
 
         transaction {
             SchemaUtils.create(Accommodations, Locations)
+            SchemaUtils.createMissingTablesAndColumns(Accommodations, Locations)
         }
     }
 
