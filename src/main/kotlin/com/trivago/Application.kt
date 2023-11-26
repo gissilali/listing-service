@@ -12,4 +12,6 @@ fun Application.module() {
     configureDatabases()
     configureHTTP()
     configureRouting()
+    configureDependencyInjection()
+
 }
