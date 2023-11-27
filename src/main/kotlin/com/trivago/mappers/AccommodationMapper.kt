@@ -11,6 +11,7 @@ fun ResultRow?.toAccommodationDTO(): AccommodationDTO? {
         null
     } else {
         AccommodationDTO(
+            id = this[Accommodations.id].toString(),
             name = this[Accommodations.name],
             rating = this[Accommodations.rating],
             category = this[Accommodations.category],

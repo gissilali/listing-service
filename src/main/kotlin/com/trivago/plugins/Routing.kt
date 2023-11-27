@@ -1,6 +1,6 @@
 package com.trivago.plugins
 
-import com.trivago.web.controllers.AccommodationsController
+import com.trivago.controllers.AccommodationsController
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
@@ -10,7 +10,19 @@ fun Application.configureRouting() {
 
     routing {
         post("/accommodations") {
-            accommodationsController.store(context)
+            accommodationsController.createAccommodation(context)
+        }
+
+        get("/accommodations/{id}") {
+            accommodationsController.getAccommodationById(context)
+        }
+
+        patch("/accommodations/{id}") {
+            accommodationsController.updateAccommodationById(context)
+        }
+
+        delete("/accommodations/{id}") {
+            accommodationsController.deleteAccommodation(context)
         }
     }
 }

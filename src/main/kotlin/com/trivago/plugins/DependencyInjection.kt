@@ -1,6 +1,6 @@
 package com.trivago.plugins
 
-import com.trivago.web.controllers.AccommodationsController
+import com.trivago.controllers.AccommodationsController
 import com.trivago.services.AccommodationService
 import io.ktor.server.application.*
 import org.koin.dsl.module

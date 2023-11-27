@@ -1,8 +1,8 @@
 package com.trivago.plugins
 
 import com.trivago.database.DatabaseFactory
-import io.ktor.server.application.*
+import io.ktor.server.application.Application
 
-fun Application.configureDatabases() {
+fun configureDatabases() {
     DatabaseFactory.initialize()
 }

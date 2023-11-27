@@ -7,6 +7,7 @@ import java.util.UUID
 
 @Serializable
 data class AccommodationDTO(
+    val id: String,
     val name: String,
     val rating: Int,
     val category: AccommodationCategory,
