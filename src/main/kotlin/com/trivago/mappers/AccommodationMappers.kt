@@ -1,8 +1,11 @@
+package com.trivago.mappers
+
 import com.trivago.database.tables.AccommodationCategory
 import com.trivago.database.tables.Accommodations
 import com.trivago.dtos.AccommodationDTO
 import com.trivago.dtos.CreateAccommodationDTO
 import com.trivago.dtos.CreateAccommodationRequestDTO
+import com.trivago.utils.calculateReputationBadgeColor
 import org.jetbrains.exposed.sql.ResultRow
 import java.util.UUID
 
@@ -18,6 +21,7 @@ fun ResultRow?.toAccommodationDTO(): AccommodationDTO? {
             locationId = this[Accommodations.locationId].toString(),
             image = this[Accommodations.image],
             reputation = this[Accommodations.reputation],
+            reputationBadge = calculateReputationBadgeColor(this[Accommodations.reputation]),
             availability = this[Accommodations.availability],
             createdAt = this[Accommodations.createdAt].toString(),
             updatedAt = this[Accommodations.createdAt].toString(),

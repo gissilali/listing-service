@@ -1,5 +1,8 @@
 package com.trivago.plugins
 
+import com.trivago.dtos.ErrorResponseDTO
+import com.trivago.exceptions.ConcurrentUpdateException
+import com.trivago.exceptions.NoAvailableRoomsException
 import com.trivago.utils.parseValidationError
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -10,7 +13,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import org.valiktor.ConstraintViolationException
 
-fun Application.configureHTTP() {
+fun Application.configureHTTP(s: (ConcurrentUpdateException) -> String) {
     install(DefaultHeaders) {
         header("X-Engine", "Ktor")
     }
@@ -35,8 +38,21 @@ fun Application.configureHTTP() {
         }
 
         exception<Throwable> { call, cause ->
-            call.respond(message = cause.toString(), status = HttpStatusCode.InternalServerError)
+            call.respond(message = ErrorResponseDTO(
+                error = cause.toString()
+            ), status = HttpStatusCode.InternalServerError)
         }
 
+        exception<NoAvailableRoomsException> { call, cause ->
+            call.respond(message = ErrorResponseDTO(
+                cause.message.toString()
+            ), status = HttpStatusCode.BadRequest)
+        }
+
+        exception<ConcurrentUpdateException> { call, cause ->
+            call.respond(message = ErrorResponseDTO(
+                s(cause)
+            ), status = HttpStatusCode.InternalServerError)
+        }
     }
 }

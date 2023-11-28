@@ -9,9 +9,14 @@ fun Application.configureRouting() {
     val accommodationsController by inject<AccommodationsController>()
 
     routing {
+        get("/accommodations") {
+            accommodationsController.getAccommodations(context)
+        }
+
         post("/accommodations") {
             accommodationsController.createAccommodation(context)
         }
+
 
         get("/accommodations/{id}") {
             accommodationsController.getAccommodationById(context)
@@ -23,6 +28,10 @@ fun Application.configureRouting() {
 
         delete("/accommodations/{id}") {
             accommodationsController.deleteAccommodation(context)
+        }
+
+        patch("/accommodations/{id}/book") {
+            accommodationsController.handleBooking(context)
         }
     }
 }
