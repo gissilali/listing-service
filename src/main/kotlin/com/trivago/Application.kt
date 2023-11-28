@@ -13,5 +13,6 @@ fun Application.module() {
     configureHTTP { cause -> cause.message.toString() }
     configureRouting()
     configureDependencyInjection()
+    configureFakeAuth()
 
 }

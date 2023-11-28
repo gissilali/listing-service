@@ -10,7 +10,9 @@ import java.util.UUID
 
 class AccommodationsController(private val accommodationService: AccommodationService) {
     suspend fun getAccommodations(call: ApplicationCall) {
+        val userId = UUID.fromString(call.request.headers["x-user-id"]!!)
         accommodationService.getAccommodations(
+            hotelierId = userId,
             AccommodationFilterDTO(
                 rating = call.request.queryParameters["rating"]?.toInt(),
                 reputationBadge = call.request.queryParameters["reputationBadge"],
@@ -22,9 +24,9 @@ class AccommodationsController(private val accommodationService: AccommodationSe
     }
 
     suspend fun createAccommodation(call: ApplicationCall) {
-
+        val userId = UUID.fromString(call.request.headers["x-user-id"]!!)
         call.receive<CreateAccommodationRequestDTO>().apply {
-            accommodationService.create(this.validateRequest()).apply {
+            accommodationService.create(userId, this.validateRequest()).apply {
                 call.respond(this)
             }
         }

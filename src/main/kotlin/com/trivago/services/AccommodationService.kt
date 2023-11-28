@@ -12,11 +12,12 @@ import com.trivago.mappers.toAccommodationDTO
 import java.util.UUID
 
 class AccommodationService {
-    fun create(data: CreateAccommodationDTO): AccommodationDTO {
+    fun create(userId: UUID, data: CreateAccommodationDTO): AccommodationDTO {
         return transaction {
             val newLocationId = addOrUpdateLocation(data.location)
 
             val accommodationId = Accommodations.insert {
+                it[hotelierId] = userId
                 it[name] = data.name
                 it[rating] = data.rating
                 it[category] = data.category
@@ -142,7 +143,7 @@ class AccommodationService {
         }
     }
 
-    fun getAccommodations(accommodationFilterDTO: AccommodationFilterDTO) : List<AccommodationDTO> {
+    fun getAccommodations(hotelierId: UUID, accommodationFilterDTO: AccommodationFilterDTO): List<AccommodationDTO> {
         return transaction {
             val query = Accommodations.join(
                 Locations,
@@ -153,6 +154,9 @@ class AccommodationService {
                 .selectAll()
                 .andWhere {
                     Accommodations.deletedOn eq null
+                }
+                .andWhere {
+                    Accommodations.hotelierId eq hotelierId
                 }
 
 
@@ -183,7 +187,7 @@ class AccommodationService {
 
             accommodationFilterDTO.city?.let {
                 query.andWhere {
-                    Locations.city like  "%$it%"
+                    Locations.city like "%$it%"
                 }
             }
 
