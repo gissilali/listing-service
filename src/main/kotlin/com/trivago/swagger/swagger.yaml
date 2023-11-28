@@ -1,0 +1,188 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: Local Server
+    url: http://0.0.0.0:8080
+info:
+  description: Service for managing Accommodation listings
+  version: "1.0.0"
+  title: Trivago Listing Service
+  contact:
+    email: gibsonsilali@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: Hoteliers
+    description: Secured Hotelier only calls
+  - name: Public
+    description: Operations available to the public
+paths:
+  /accommodations:
+    get:
+      tags:
+        - Hoteliers
+      summary: fetches accommodations
+      operationId: fetchAccommodations
+      description: |
+        You can fetch accommodations, you can also pass optional parameters for
+      parameters:
+        - in: query
+          name: rating
+          description: accommodation rating
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: reputationBadge
+          description: string representing accommodation reputation
+          schema:
+            type: string
+            enum:
+              - red
+              - yellow
+              - green
+        - in: query
+          name: city
+          description: Allows searching of accommodations by city name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Accommodation'
+        '400':
+          description: bad input parameter
+    post:
+      tags:
+        - hotelier
+      summary: adds accommodation
+      operationId: createAccommodation
+      description: Adds an accommodation item
+      responses:
+        '200':
+          description: item created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accommodation'
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing item already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccommodationRequestBody'
+        description: Inventory item to add
+components:
+  schemas:
+    Accommodation:
+      type: object
+      required:
+        - id
+        - name
+        - rating
+        - category
+        - location
+        - image
+        - reputation
+        - reputationBadge
+        - availability
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        rating:
+          type: integer
+        category:
+          type: string
+          enum:
+            - hotel
+            - alternative
+            - hostel
+            - lodge
+            - resort
+        location:
+          $ref: '#/components/schemas/Location'
+        image:
+          type: string
+          format: url
+        reputation:
+          type: integer
+        reputationBadge:
+          format: string
+          enum:
+            - red
+            - yellow
+            - green
+        availability:
+          type: integer
+
+    AccommodationRequestBody:
+      type: object
+      required:
+        - name
+        - rating
+        - category
+        - location
+        - image
+        - reputation
+        - reputationBadge
+        - availability
+      properties:
+        name:
+          type: string
+        rating:
+          type: integer
+        category:
+          type: string
+          enum:
+            - hotel
+            - alternative
+            - hostel
+            - lodge
+            - resort
+        location:
+          $ref: '#/components/schemas/Location'
+        image:
+          type: string
+          format: url
+        reputation:
+          type: integer
+        reputationBadge:
+          format: string
+          enum:
+            - red
+            - yellow
+            - green
+        availability:
+          type: integer
+    Location:
+      required:
+        - city
+        - state
+        - country
+        - zipCode
+        - address
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        city:
+          type: string
+        country:
+          type: string
+        zipCode:
+          type: integer
+        address:
+          type: string

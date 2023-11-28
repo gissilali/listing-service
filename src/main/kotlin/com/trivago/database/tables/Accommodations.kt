@@ -16,7 +16,8 @@ enum class AccommodationCategory(value: String) {
 object Accommodations : Table() {
     val id = uuid("id").autoGenerate()
 
-    val name = varchar("name", 10)
+    val name = varchar("name", 255)
+    val hotelierId = uuid("hotelier_id").nullable()
     val rating = integer("rating")
     val category = enumerationByName("categories", 50, AccommodationCategory::class)
     val locationId = uuid("location_id")
@@ -26,7 +27,9 @@ object Accommodations : Table() {
     val publishedOn = datetime("published_on").defaultExpression(CurrentDateTime).nullable()
     val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
     val updatedAt = datetime("updated_at").defaultExpression(CurrentDateTime)
+    val isUpdating = bool("is_updating").default(false)
     val deletedOn = datetime("deleted_on").nullable()
+
 
     override val primaryKey = PrimaryKey(id)
 }

@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureSerialization()
     configureDatabases()
-    configureHTTP()
+    configureHTTP { cause -> cause.message.toString() }
     configureRouting()
     configureDependencyInjection()
 

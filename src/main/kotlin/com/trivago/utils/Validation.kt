@@ -4,9 +4,10 @@ import org.valiktor.Constraint
 import org.valiktor.ConstraintViolationException
 import org.valiktor.Validator
 import org.valiktor.i18n.mapToMessage
+import java.net.MalformedURLException
+import java.net.URISyntaxException
+import java.net.URL
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.List
 
 
 fun parseValidationError(validationError: ConstraintViolationException): MutableMap<String, ArrayList<String>> {
@@ -23,6 +24,8 @@ fun parseValidationError(validationError: ConstraintViolationException): Mutable
 }
 
 object ValidUUID : Constraint
+object ValidUrl : Constraint
+object LengthOfInt : Constraint
 
 object Keyword : Constraint
 
@@ -42,4 +45,20 @@ fun <E> Validator<E>.Property<String?>.isValidUUID() = this.validate(ValidUUID) 
     } catch (e: Throwable) {
         false
     }
+}
+
+fun <E> Validator<E>.Property<String?>.isValidUrl() = this.validate(ValidUrl) {
+    it == null ||
+    try {
+        URL(it).toURI()
+        true
+    } catch (e: MalformedURLException) {
+        false
+    } catch (e: URISyntaxException) {
+        false
+    }
+}
+
+fun <E> Validator<E>.Property<Int?>.hasLength(size: Int) = this.validate(LengthOfInt) {
+    it.toString().length == size
 }

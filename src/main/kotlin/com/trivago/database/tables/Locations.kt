@@ -5,10 +5,10 @@ import org.jetbrains.exposed.sql.Table
 
 object Locations : Table() {
     val id = uuid("id").autoGenerate()
-    val city = varchar("city", 255)
-    val state = varchar("state", 255)
-    val country = varchar("country", 255)
+    val city = largeText("city")
+    val state = largeText("state")
+    val country = largeText("country")
     val zipCode = integer("zip_code")
-    val address = text("address")
+    val address = largeText("address")
     override val primaryKey = PrimaryKey(id)
 }

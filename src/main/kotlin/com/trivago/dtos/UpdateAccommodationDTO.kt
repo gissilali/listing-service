@@ -7,7 +7,7 @@ data class UpdateAccommodationDTO(
     val name: String? = null,
     val rating: Int? = null,
     val category: AccommodationCategory? = null,
-    val locationId: UUID? = null,
+    val location: LocationDTO? = null,
     val image: String? = null,
     val reputation: Int? = null,
 )
