@@ -9,29 +9,31 @@ fun Application.configureRouting() {
     val accommodationsController by inject<AccommodationsController>()
 
     routing {
-        get("/accommodations") {
-            accommodationsController.getAccommodations(context)
-        }
+        route("v1") {
+            get("/accommodations") {
+                accommodationsController.getAccommodations(context)
+            }
 
-        post("/accommodations") {
-            accommodationsController.createAccommodation(context)
-        }
+            post("/accommodations") {
+                accommodationsController.createAccommodation(context)
+            }
 
 
-        get("/accommodations/{id}") {
-            accommodationsController.getAccommodationById(context)
-        }
+            get("/accommodations/{id}") {
+                accommodationsController.getAccommodationById(context)
+            }
 
-        patch("/accommodations/{id}") {
-            accommodationsController.updateAccommodationById(context)
-        }
+            patch("/accommodations/{id}") {
+                accommodationsController.updateAccommodationById(context)
+            }
 
-        delete("/accommodations/{id}") {
-            accommodationsController.deleteAccommodation(context)
-        }
+            delete("/accommodations/{id}") {
+                accommodationsController.deleteAccommodation(context)
+            }
 
-        patch("/accommodations/{id}/book") {
-            accommodationsController.handleBooking(context)
+            patch("/accommodations/{id}/book") {
+                accommodationsController.handleBooking(context)
+            }
         }
     }
 }
