@@ -32,8 +32,6 @@ Before you begin, ensure that you have Docker installed on your machine. You can
     docker-compose up --build
     ```
 
-**Note:** Ensure that the API is configured correctly for your environment. Refer to the API documentation for specific configuration options and details on available endpoints.
-
 ## Assumptions
 
 - Authentication is already implemented, to simulate it, I require a ``x-user-id`` header for every request
